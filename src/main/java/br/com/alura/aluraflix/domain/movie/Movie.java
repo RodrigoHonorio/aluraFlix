@@ -25,4 +25,10 @@ public class Movie {
     private String description;
     private String url;
 
+
+    public Movie(DataAddMovie data) {
+        this.name = data.name();
+        this.description = data.description();
+        this.url = data.url();
+    }
 }
