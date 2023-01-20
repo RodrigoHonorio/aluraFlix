@@ -6,6 +6,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity class to store the Movie object
+ */
+
+
 @Table(name = "movies")
 @Entity(name = "Movie")
 @Getter
