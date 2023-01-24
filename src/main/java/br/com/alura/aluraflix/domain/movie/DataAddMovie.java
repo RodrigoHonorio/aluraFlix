@@ -4,11 +4,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 public record DataAddMovie(
-        @NotNull @Valid
+        @Valid
         String name,
 
-        @NotNull @Valid
+        @Valid
         String description,
 
-        @NotNull @Valid
+        @Valid
         String url) { }
