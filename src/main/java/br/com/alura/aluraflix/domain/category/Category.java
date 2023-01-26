@@ -20,4 +20,8 @@ public class Category {
     private String title;
     private String color;
 
+    public Category(DataAddCategory data) {
+        this.title = data.title();
+        this.color = data.color();
+    }
 }

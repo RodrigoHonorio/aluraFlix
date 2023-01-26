@@ -1,22 +1,20 @@
 package br.com.alura.aluraflix.controller;
 
-import br.com.alura.aluraflix.domain.category.CategoriesListingData;
-import br.com.alura.aluraflix.domain.category.Category;
-import br.com.alura.aluraflix.domain.category.CategoryDetaliedData;
-import br.com.alura.aluraflix.domain.category.CategoryRepository;
+import br.com.alura.aluraflix.domain.category.*;
+import br.com.alura.aluraflix.domain.movie.DataAddMovie;
 import br.com.alura.aluraflix.domain.movie.Movie;
 import br.com.alura.aluraflix.domain.movie.MovieDetaliedData;
 import br.com.alura.aluraflix.domain.movie.MoviesListingData;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Controller class that receives requests for categories
@@ -54,5 +52,23 @@ public class CategoryController {
         }catch(EntityNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    /**
+     * POST
+     * Respond to a POST request that creates a new category, if all fields are filled in and validated.
+     * @param data
+     * @param uriBuilder
+     * @return Json with information about the created category.
+     */
+    @PostMapping
+    @Transactional
+    public ResponseEntity addCategory(@RequestBody @Valid DataAddCategory data, UriComponentsBuilder uriBuilder){
+        var category = new Category(data);
+        repository.save(category);
+
+        var uri = uriBuilder.path("/categories/{id}").buildAndExpand(category.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new CategoryDetaliedData(category));
     }
 }
